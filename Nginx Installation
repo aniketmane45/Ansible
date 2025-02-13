@@ -1,0 +1,15 @@
+- name: play1
+  hosts: localhost
+  become: true
+  connection: local  # Corrected from 'connections' to 'connection'
+  tasks:
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes  # Optional, but good practice
+
+    - name: Start Nginx service
+      service:
+        name: nginx
+        state: started
