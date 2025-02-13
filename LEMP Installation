@@ -1,0 +1,34 @@
+- name: myplay1
+  hosts: localhost
+  become: true
+  connection: local
+
+  tasks:
+    - name: Install LEMP stack
+      apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: yes  # Recommended for package updates
+      loop:
+        - nginx
+        - php
+        - php8.3-fpm
+        - mariadb-server
+
+    - name: Start all services
+      service:
+        name: "{{ item }}"
+        state: started
+      loop:
+        - nginx
+        - php8.3-fpm
+        - mariadb  # Ensure this is the correct service name on your system
+
+    - name: Restart all services
+      service:
+        name: "{{ item }}"
+        state: restarted
+      loop:
+        - nginx
+        - php8.3-fpm
+        - mariadb  # Ensure this is the correct service name on your system
