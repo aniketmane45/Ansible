@@ -65,3 +65,8 @@
       - nginx
       - php-fpm
       - mariadb
+
+##myhost.ini File For This
+[webserver]
+172.31.12.187 ansible_ssh_user='ubuntu' ansible_private_key_file="git1.pem"
+172.31.5.67  ansible_ssh_user='ec2-user' ansible_private_key_file="git1.pem"
