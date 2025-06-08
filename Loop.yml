@@ -1,0 +1,33 @@
+- name: lemp
+  hosts: localhost
+  become: true
+  connection: local
+  tasks:
+    - name: stop apache
+      service:
+        name: apache2
+        state: stopped
+    - name: installation
+      apt:
+        name: "{{item}}"
+        state: present
+      loop:
+        - nginx
+        - php8.3-fpm
+        - mariadb-server
+    - name: start services
+      service:
+        name: "{{item}}"
+        state: started
+      loop:
+        - nginx
+        - php8.3-fpm
+        - mariadb
+    - name: restart services
+      service:
+        name: "{{item}}"
+        state: restarted
+      loop:
+        - nginx
+        - php8.3-fpm
+        - mariadb
