@@ -1,0 +1,64 @@
+- name: lemp
+  hosts: all
+  become: true
+  connection: local
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+      when: inventory_hostname in groups['webserver']
+    - name: start nginx service
+      service:
+        name: nginx
+        state: started
+      when: inventory_hostname in groups['webserver']
+    - name: install php
+      apt:
+        name: php8.3-fpm
+        state: present
+      when: inventory_hostname in groups['appserver']
+    - name: start php service
+      service:
+        name: php8.3-fpm
+        state: started
+      when: inventory_hostname in groups['appserver']
+    - name: install mysql
+      apt:
+        name: mariadb-server
+        state: present
+      when: inventory_hostname in groups['dbserver']
+    - name: start mysql service
+      service:
+        name: mariadb
+        state: started
+      when: inventory_hostname in groups['dbserver']
+    - name: restart nginx service
+      service:
+        name: nginx
+        state: restarted
+      when: inventory_hostname in groups['webserver']
+    - name: restart php service
+      service:
+        name: php8.3-fpm
+        state: restarted
+      when: inventory_hostname in groups['appserver']
+    - name: restart mysql service
+      service:
+        name: mariadb
+        state: restarted
+      when: inventory_hostname in groups['dbserver']
+
+##myhost.ini
+[webserver]
+
+172.31.12.187 ansible_ssh_user='ubuntu' ansible_private_key_file="git1.pem"
+
+[appserver]
+
+172.31.10.81 ansible_ssh_user='ubuntu' ansible_private_key_file="git1.pem"
+
+[dbserver]
+
+172.31.9.104 ansible_ssh_user='ubuntu' ansible_private_key_file="git1.pem"
+ 
